@@ -1,5 +1,8 @@
-from operatorlib import Colors as clr
+from operatorlib import Colors, clear
+from commands import Command, commands
 import os
+
+clear()
 
 if os.name == 'nt': # Only if we are running on Windows
     from ctypes import windll
@@ -14,22 +17,13 @@ class Operator:
     def getVersionString(self):
         return f"{self.major}.{self.minor} (Build {self.build})"
 
-class Command:
-    def __init__(self, cmd, helpinfo, executor):
-        self.cmd = str(cmd)
-        self.helpinfo = helpinfo
-        self.executor = executor
-    
-    def runCmd(self, arguments):
-        exec(f"""arguments = {arguments}\n{self.executor}""")
+print(f"{Colors.GREEN}Welcome to theOperator version {Operator().getVersionString()}{Colors.END}")
 
-commands = [Command("test", "Testing command.", """print("hello, world!")""")]
+while True:
+    cmdraw = input(f"> ")
+    args = cmdraw.split()
+    cmd = args[0]
 
-print(f"{clr.GREEN}Welcome to theOperator version {Operator().getVersionString()}{clr.END}")
-cmdraw = input(f"> ")
-args = cmdraw.split()
-cmd = args[0]
-
-for c in commands:
-    if cmd == c.cmd:
-        c.runCmd(args)
+    for c in commands:
+        if cmd == c.cmd:
+            c.runCmd(args)
