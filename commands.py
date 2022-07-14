@@ -4,7 +4,7 @@ class Command:
         self.helpinfo = helpinfo
         self.executor = executor
     
-    def runCmd(self, arguments):
-        exec(f"""arguments = {arguments}\n{self.executor}""")
+    def runCmd(self, arguments, rawcmd):
+        exec(f"""arguments = {arguments}\nrawcmd = "{rawcmd}"\n{self.executor}""")
 
-commands = [Command("test", "Testing command.", """print("hello, world!")""")]
+commands = [Command("test", "Testing command.", """print("hello, world!")"""), Command("cat", "Gives your input back to you.", """print(" ".join(arguments[1:]))""")]

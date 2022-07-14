@@ -1,6 +1,7 @@
-from operatorlib import Colors, clear
+from lib2to3.pgen2.token import OP
+from operatorlib import Colors, clear, Operator
 from commands import Command, commands
-import os
+import os, keyboard
 
 clear()
 
@@ -9,21 +10,18 @@ if os.name == 'nt': # Only if we are running on Windows
     k = windll.kernel32
     k.SetConsoleMode(k.GetStdHandle(-11), 7)
 
-class Operator:
-    major = 1
-    minor = 0
-    build = 2
-
-    def getVersionString(self):
-        return f"{self.major}.{self.minor} (Build {self.build})"
-
 print(f"{Colors.GREEN}Welcome to theOperator version {Operator().getVersionString()}{Colors.END}")
-
-while True:
-    cmdraw = input(f"> ")
-    args = cmdraw.split()
-    cmd = args[0]
-
-    for c in commands:
-        if cmd == c.cmd:
-            c.runCmd(args)
+history = []
+try:
+    while True:
+        cmdraw = input(f"> ")
+        args = cmdraw.split()
+        cmd = args[0]
+        history.insert(0, cmd)
+        for c in commands:
+            if cmd == c.cmd:
+                c.runCmd(args, cmdraw)
+                print(history)
+except KeyboardInterrupt:
+    clear()
+    print(f"{Colors.RED}{Colors.BOLD}{Operator().getVersionString()} shutting down.{Colors.END}")

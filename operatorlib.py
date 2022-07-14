@@ -1,6 +1,13 @@
 import os
 
 # Implements core features.
+class Operator:
+    major = 1
+    minor = 0
+    build = 3
+
+    def getVersionString(self):
+        return f"{self.major}.{self.minor} (Build {self.build})"
 
 # define our clear function
 def clear():
@@ -12,6 +19,9 @@ def clear():
     # for mac and linux(here, os.name is 'posix')
     else:
         _ = os.system('clear')
+
+class SpecialKeys:
+    UPARROW = "\033[0;72"
 
 class Colors:
     """ ANSI color codes """
